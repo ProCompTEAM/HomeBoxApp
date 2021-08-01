@@ -1,4 +1,4 @@
-# HomeBoxApp - v1.0
+# HomeBoxApp - v1.1
 ## TV and Radio for old tablet (Android 4.1+)
 Turns the tablet into a TV-Radio tuner.
 
