@@ -14,6 +14,7 @@ ____
 ## Startup:
 - Compile with VS + Xamarin 
 - Install .apk file
+- There are two m3u playlists in storage: tv.m3u + radio.m3u
 
 ## Branches:
 - **master** => main development branch
