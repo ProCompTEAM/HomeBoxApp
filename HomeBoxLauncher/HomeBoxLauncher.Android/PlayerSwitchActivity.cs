@@ -152,8 +152,8 @@ namespace HomeBoxLauncher.Droid
 
         private void SelectChannel(int index)
         {
-            string label = reader.Labels[index];
-            string url = reader.Channels[index];
+            string label = reader.Channels[index].Label;
+            string url = reader.Channels[index].Url;
 
             ChannelIndex = index;
             

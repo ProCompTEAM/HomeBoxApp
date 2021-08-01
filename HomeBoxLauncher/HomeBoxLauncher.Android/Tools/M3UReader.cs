@@ -3,15 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+using HomeBoxLauncher.Droid.Models;
+
 namespace HomeBoxLauncher.Droid.Tools
 {
     public class M3UReader
     {
-        public List<string> Labels = new List<string>();
+        public List<Channel> Channels = new List<Channel>();
 
-        public List<string> Channels = new List<string>();
+        public string Path { get; }
 
-        private string Path;
+        private string lastScannedLabel;
+
+        private string lastScannedUrl;
 
         public M3UReader(string playlistFullPath)
         {
@@ -29,15 +33,26 @@ namespace HomeBoxLauncher.Droid.Tools
                 switch (view)
                 {
                     case M3UView.Label:
-                        string label = TakeLabel(rawData);
-                        Labels.Add(label);
+                        lastScannedLabel = TakeLabel(rawData);
                     break;
 
                     case M3UView.Url:
-                        Channels.Add(rawData);
+                        lastScannedUrl = rawData;
+                        RegisterChannel();
                     break;
                 }
             }
+        }
+
+        private void RegisterChannel()
+        {
+            Channel channel = new Channel
+            {
+                Label = lastScannedLabel,
+                Url = lastScannedUrl
+            };
+
+            Channels.Add(channel);
         }
 
         private string TakeLabel(string rawData)

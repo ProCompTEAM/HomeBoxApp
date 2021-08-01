@@ -50,7 +50,7 @@ namespace HomeBoxLauncher.Droid
             layout.Orientation = Orientation.Vertical;
             layout.SetBackgroundColor(Color.Black);
 
-            List<string> channelLabels = reader.Labels.Select((label, index) => $"{index + 1}. {label}").ToList();
+            List<string> channelLabels = reader.Channels.Select((channel, index) => $"{index + 1}. {channel.Label}").ToList();
             ArrayAdapter adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, channelLabels);
             listView = new ListView(this);
             listView.Adapter = adapter;
@@ -84,8 +84,8 @@ namespace HomeBoxLauncher.Droid
 
         private void SelectChannel(int index)
         {
-            string label = reader.Labels[index];
-            string url = reader.Channels[index];
+            string label = reader.Channels[index].Label;
+            string url = reader.Channels[index].Url;
             
             AppSettings.PublicLabel = label;
             AppSettings.StreamUrl = url;

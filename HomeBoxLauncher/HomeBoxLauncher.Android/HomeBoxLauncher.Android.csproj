@@ -67,6 +67,7 @@
     <Compile Include="Enums\M3UView.cs" />
     <Compile Include="Enums\Mode.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Models\Channel.cs" />
     <Compile Include="PlayerListActivity.cs" />
     <Compile Include="Tools\PlaylistInfo.cs" />
     <Compile Include="TVPlayActivity.cs" />
