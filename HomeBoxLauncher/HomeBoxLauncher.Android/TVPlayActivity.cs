@@ -26,8 +26,6 @@ namespace HomeBoxLauncher.Droid
     {
         private VideoView video;
 
-        private bool scalled = false;
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -52,15 +50,19 @@ namespace HomeBoxLauncher.Droid
         private void LoadUI()
         {
             LinearLayout layout = new LinearLayout(this);
-            layout.Orientation = Orientation.Vertical;
+            layout.Orientation = Orientation.Horizontal;
             layout.SetBackgroundColor(Color.Black);
 
             video = new VideoView(this);
-            video.Touch += OnVideoActivated;
             video.SetVideoPath(AppSettings.StreamUrl);
 
             layout.AddView(video);
             SetContentView(layout);
+
+            DisplayInfo mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
+            ViewGroup.LayoutParams parameters = video.LayoutParameters;
+            parameters.Width = (int)mainDisplayInfo.Width;
+            parameters.Height = (int)mainDisplayInfo.Height;
         }
 
         private void Play()
@@ -68,26 +70,6 @@ namespace HomeBoxLauncher.Droid
             Toast.MakeText(this, AppSettings.PublicLabel, ToastLength.Long).Show();
 
             video.Start();
-        }
-
-        private void OnVideoActivated(object sender, EventArgs eventArgs)
-        {
-            if (!scalled)
-            {
-                video.ScaleX = 2;
-                video.ScaleY = 2;
-
-                Toast.MakeText(this, "Видео x2", ToastLength.Short).Show();
-            }
-            else
-            {
-                video.ScaleX = 1;
-                video.ScaleY = 1;
-
-                Toast.MakeText(this, "Видео x1", ToastLength.Short).Show();
-            }
-
-            scalled = !scalled;
         }
     }
 }

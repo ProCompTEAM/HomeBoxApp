@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Media;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -14,7 +15,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
+using Mode = HomeBoxLauncher.Droid.Enums.Mode;
+using Orientation = Android.Widget.Orientation;
 
 namespace HomeBoxLauncher.Droid
 {
@@ -27,6 +31,8 @@ namespace HomeBoxLauncher.Droid
 
         private int ChannelIndex = 0;
 
+        private MediaPlayer backgroundPlayer = new MediaPlayer();
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -35,6 +41,18 @@ namespace HomeBoxLauncher.Droid
 
             Platform.Init(this, savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
+        }
+
+        public override void OnBackPressed()
+        {
+            StopBackgroundPlay();
+            Finish();
+        }
+
+        protected override void OnPause()
+        {
+            StopBackgroundPlay();
+            base.OnPause();
         }
 
         private void LoadAll()
@@ -47,6 +65,8 @@ namespace HomeBoxLauncher.Droid
                 Finish();
                 return;
             }
+
+            backgroundPlayer.SetAudioStreamType(Android.Media.Stream.Music);
 
             InitializeReader(playlistPath);
             LoadUI();
@@ -98,6 +118,8 @@ namespace HomeBoxLauncher.Droid
 
         private void OnPlayChannelButtonClicked(object sender, EventArgs eventArgs)
         {
+            StopBackgroundPlay();
+
             if (AppSettings.Mode == Mode.TV)
             {
                 StartActivity(typeof(TVPlayActivity));
@@ -161,6 +183,8 @@ namespace HomeBoxLauncher.Droid
             AppSettings.StreamUrl = url;
 
             channelLabel.Text = $"▶️ {(ChannelIndex + 1)}. {label}";
+
+            StartBackgroundPlay();
         }
 
         private void PreviousChannel()
@@ -185,6 +209,22 @@ namespace HomeBoxLauncher.Droid
             }
 
             SelectChannel(index);
+        }
+
+        private void StartBackgroundPlay()
+        {
+            Task.Run(() =>
+            {
+                backgroundPlayer.Reset();
+                backgroundPlayer.SetDataSource(AppSettings.StreamUrl);
+                backgroundPlayer.Prepare();
+                backgroundPlayer.Start();
+            });
+        }
+
+        private void StopBackgroundPlay()
+        {
+            backgroundPlayer.Stop();
         }
     }
 }
