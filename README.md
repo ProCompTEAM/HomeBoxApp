@@ -2,10 +2,6 @@
 ## TV and Radio for old tablet (Android 4.1+)
 Turns the tablet into a TV-Radio tuner.
 
-
-__Copyright http://vk.com/kirillporoh__
-____
-
 ## Environment & Tools:
 - Tablet with Android 4.1 and more
 - .NET with Xamarin (API 16)
