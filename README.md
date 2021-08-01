@@ -1,2 +1,2 @@
 # HomeBoxApp
-TV and Radio for old tablet
+TV and Radio for old tablet (Android)
